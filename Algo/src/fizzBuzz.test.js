@@ -22,3 +22,13 @@ test.each([
 ])("it should return 'Buzz' as the %s element when argument is %d", (_, n) => {
   expect(fizzBuzz(n).at(n - 1)).toEqual("Buzz");
 });
+
+test.each([
+  ["fifteenth", 15],
+  ["thirtieth", 30],
+])(
+  "it should return 'FizzBuzz' as the %s element when argument is %d",
+  (_, n) => {
+    expect(fizzBuzz(n).at(n - 1)).toEqual("FizzBuzz");
+  }
+);
