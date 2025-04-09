@@ -21,6 +21,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:e2e": "npx playwright test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -58,5 +59,9 @@
       },
       "resolve-url-loader": "^5.0.0"
     }
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "playwright": "^1.51.1"
   }
 }
