@@ -1,0 +1,10 @@
+- main:
+    - heading "Github Search" [level=1]
+    - search:
+        - searchbox "input" [placeholder="Search input"]
+    - menubar:
+        - menuitemcheckbox /\d+ elements selected/
+        - group:
+            - menuitem "Duplicate"
+            - menuitem "Delete"
+    - feed

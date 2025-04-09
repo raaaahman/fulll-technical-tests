@@ -1,0 +1,7 @@
+- article:
+  - checkbox
+  - banner:
+    - img [alt=/profile picture/]
+    - text "ID"
+    - heading "Login" [level=2]
+  - link "View Profile"
