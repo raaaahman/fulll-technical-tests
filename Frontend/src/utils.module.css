@@ -1,0 +1,23 @@
+.h1 {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.text-neutral-darker {
+  color: var(--neutral-darker);
+}
+
+.sr-only {
+  font-size: 0;
+}
+
+.btn-ghost {
+  background-color: transparent;
+  border: none;
+}
+
+.icon-sm {
+  width: 1.5rem;
+  height: 1.5rem;
+}
