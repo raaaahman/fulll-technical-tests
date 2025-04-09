@@ -1,0 +1,52 @@
+.app {
+  width: 100%;
+  max-width: 1440px;
+  min-height: 100dvh;
+  margin: auto;
+  background-color: var(--neutral-light);
+  color: var(--neutral-light-content);
+  display: flex;
+  flex-direction: column;
+}
+
+.app_title {
+  height: 64px;
+  background-color: var(--neutral-darker);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 1.5rem 0;
+}
+
+.searchbar {
+  align-self: center;
+}
+
+.searchbox {
+  min-width: 24rem;
+  height: 2.75rem;
+  background-color: var(--neutral-darken);
+  color: var(--neutral-darken-content);
+  border-radius: 0.5rem;
+}
+
+.menubar {
+  margin: 2rem 1rem;
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+}
+
+.select-all:indeterminate,
+.select-all:checked {
+  border-style: solid;
+  border-color: var(--primary-content);
+  border-width: 2px;
+  border-radius: 2px;
+  background-color: var(--primary);
+}
+
+.select-all_label_number {
+  font-weight: 700;
+}
