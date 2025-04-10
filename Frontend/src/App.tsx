@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useActionState } from "react";
 
 import { composeClass as cc } from "./helpers/css";
 import styles from "./App.module.css";
@@ -6,11 +6,25 @@ import utils from "./utils.module.css";
 import { ReactComponent as CopyIcon } from "./icons/copy.svg";
 import { ReactComponent as DeleteIcon } from "./icons/trash.svg";
 
-// TODO: Replace with live data from user requests
-import users from "./__mocks__/github-users_q=mic.json";
 import { UserCard } from "./UserCard";
+import { getUsersByLogin } from "./queries";
+import { UserData } from "./types";
 
 function App() {
+  const [users, submitQuery, isPending] = useActionState(
+    async (previousUsers: Array<UserData> | null, formData: FormData) => {
+      const needle = formData.get("search-input")?.toString();
+
+      if (typeof needle === "string" && needle.length >= 3) {
+        const response = await getUsersByLogin(needle);
+        return response.items;
+      } else {
+        return previousUsers;
+      }
+    },
+    null
+  );
+
   return (
     <main className={cc(styles.app, utils["full-height"])}>
       <h1 className={cc(styles.app_title, utils.h1)}>
@@ -20,6 +34,7 @@ function App() {
         <form
           role="search"
           className={cc(styles.searchbar, utils["mx-md"], utils["flex-static"])}
+          action={submitQuery}
         >
           <input
             type="search"
@@ -66,9 +81,17 @@ function App() {
           </div>
         </div>
         <section role="feed" className={styles.feed}>
-          {users.items.map((user) => (
-            <UserCard key={user.id} {...user} />
-          ))}
+          {isPending ? (
+            <p>Loading...</p>
+          ) : Array.isArray(users) ? (
+            users.length > 0 ? (
+              users.map((user) => <UserCard key={user.id} {...user} />)
+            ) : (
+              <p>No user match this query...</p>
+            )
+          ) : (
+            <p>Type into the search bar to search for Github users.</p>
+          )}
         </section>
       </div>
     </main>
