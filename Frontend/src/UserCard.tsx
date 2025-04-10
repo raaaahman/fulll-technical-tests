@@ -2,21 +2,16 @@ import { composeClass as cc } from "./helpers/css";
 import styles from "./UserCard.module.css";
 import utils from "./utils.module.css";
 
-type UserCardProps = {
-  login: string;
-  id: number;
-  avatar_url: string;
-  url: string;
-};
+import { UserData } from "./types";
 
-export function UserCard({ login, id, avatar_url, url }: UserCardProps) {
+export function UserCard({ login, id, avatar_url, html_url }: UserData) {
   return (
     <article className={cc(styles.card, utils["mx-md"])}>
       <input type="checkbox" name="select-user" className={styles.select} />
       <header>
         <img
           src={avatar_url}
-          alt={`${login}'s profile picture`}
+          alt={`${login} avatar`}
           className={styles.avatar}
         />
         <p className={cc(utils.h2, utils["my-none"])}>{id}</p>
@@ -24,7 +19,7 @@ export function UserCard({ login, id, avatar_url, url }: UserCardProps) {
           {login}
         </h2>
       </header>
-      <a href={url} className={styles["profile-cta"]}>
+      <a href={html_url} className={styles["profile-cta"]}>
         View Profile
       </a>
     </article>
