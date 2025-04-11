@@ -1,7 +1,8 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 
 import { SearchBar } from "./SearchBar";
+import { QueryContext } from "../contexts/QueryContext";
 
 describe("The SearchBar component", () => {
   let user: UserEvent;
@@ -30,7 +31,15 @@ describe("The SearchBar component", () => {
       const mockQuery = jest.fn();
       const name = "search-input";
 
-      render(<SearchBar action={mockQuery} name={name} />);
+      render(<SearchBar name={name} />, {
+        wrapper: ({ children }) => (
+          <QueryContext
+            value={{ query: mockQuery, data: null, isPending: false }}
+          >
+            {children}
+          </QueryContext>
+        ),
+      });
 
       const searchbox = await screen.findByRole("searchbox");
 
@@ -51,7 +60,15 @@ describe("The SearchBar component", () => {
     const mockQuery = jest.fn();
     const name = "search-input";
 
-    render(<SearchBar action={mockQuery} name={name} />);
+    render(<SearchBar name={name} />, {
+      wrapper: ({ children }) => (
+        <QueryContext
+          value={{ query: mockQuery, data: null, isPending: false }}
+        >
+          {children}
+        </QueryContext>
+      ),
+    });
 
     const searchbox = await screen.findByRole("searchbox");
 
