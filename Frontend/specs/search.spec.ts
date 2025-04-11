@@ -1,28 +1,4 @@
 import { test, expect } from "@playwright/test";
-import fs from "node:fs/promises";
-import path from "node:path";
-
-// eslint-disable-next-line jest/no-mocks-import
-import users from "../src/__mocks__/github-users_q=mic.json";
-
-// These tests use a mock API response to avoid hitting the Github API rate limits in development.
-test.beforeEach(async ({ page }) => {
-  const avatar = await fs.readFile(
-    path.resolve(__dirname, "assets/avatar.svg")
-  );
-
-  page.route(/^http(s):\/\/api.github.com/, async (route) => {
-    await route.fulfill({ status: 200, json: users });
-  });
-
-  page.route(/^http(s):\/\/avatars.githubusercontent.com/, async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: "image/svg+xml",
-      body: avatar,
-    });
-  });
-});
 
 /**
  * This tests a nominal case for the search feature.
