@@ -5,15 +5,17 @@ import styles from "./App.module.css";
 import utils from "./utils.module.css";
 import { ReactComponent as CopyIcon } from "./icons/copy.svg";
 import { ReactComponent as DeleteIcon } from "./icons/trash.svg";
-
-import { UserCard } from "./UserCard";
+import { UserCard } from "./components/UserCard";
 import { getUsersByLogin } from "./queries";
 import { UserData } from "./types";
+import { SearchBar } from "./components/SearchBar";
+
+const SEARCH_INPUT_NAME = "search-input";
 
 function App() {
   const [users, submitQuery, isPending] = useActionState(
     async (previousUsers: Array<UserData> | null, formData: FormData) => {
-      const needle = formData.get("search-input")?.toString();
+      const needle = formData.get(SEARCH_INPUT_NAME)?.toString();
 
       if (typeof needle === "string" && needle.length >= 3) {
         const response = await getUsersByLogin(needle);
@@ -31,20 +33,7 @@ function App() {
         <span>Github Search</span>
       </h1>
       <div className={cc(styles["app_container"], utils["flex-column"])}>
-        <form
-          role="search"
-          className={cc(styles.searchbar, utils["mx-md"], utils["flex-static"])}
-          action={submitQuery}
-        >
-          <input
-            type="search"
-            id="search-input"
-            name="search-input"
-            aria-label="Search input"
-            placeholder="Search input"
-            className={cc(styles.searchbox, utils.h1)}
-          />
-        </form>
+        <SearchBar action={submitQuery} name={SEARCH_INPUT_NAME} ariaLabel="Search input" placeholder="Search Input" />
         <div
           role="menubar"
           className={cc(styles.menubar, utils["mx-md"], utils["flex-static"])}
@@ -99,3 +88,5 @@ function App() {
 }
 
 export default App;
+
+

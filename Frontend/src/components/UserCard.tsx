@@ -1,8 +1,7 @@
-import { composeClass as cc } from "./helpers/css";
+import { composeClass as cc } from "../helpers/css";
 import styles from "./UserCard.module.css";
-import utils from "./utils.module.css";
-
-import { UserData } from "./types";
+import utils from "../utils.module.css";
+import { UserData } from "../types";
 
 export function UserCard({ login, id, avatar_url, html_url }: UserData) {
   return (

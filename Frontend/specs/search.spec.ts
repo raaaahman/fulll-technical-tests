@@ -26,7 +26,6 @@ test("The search feature", async ({ page }) => {
     const searchbox = await page.getByRole("searchbox");
 
     await searchbox.fill("mic");
-    await page.keyboard.press("Enter");
 
     await expect(page.getByRole("article").first()).toMatchAriaSnapshot({
       name: "user-card.aria.yml",
