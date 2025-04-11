@@ -1,28 +1,23 @@
-import {
-  ActionDispatch,
-  ChangeEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { composeClass as cc } from "../helpers/css";
 import utils from "../utils.module.css";
 import styles from "./SearchBar.module.css";
+import { useQueryContext } from "../contexts/QueryContext";
 
 type SearchBarProps = {
-  action: ActionDispatch<[FormData]>;
   name: string;
   ariaLabel?: string;
   placeholder?: string;
 };
 
 export function SearchBar({
-  action,
   name,
   ariaLabel = "Search",
   placeholder,
 }: SearchBarProps) {
+  const { query: action } = useQueryContext();
+
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined);
   const [value, setValue] = useState("");
 

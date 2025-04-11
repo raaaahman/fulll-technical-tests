@@ -40,13 +40,3 @@
 .select-all_label_number {
   font-weight: 700;
 }
-
-.feed {
-  align-self: center;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  overflow-y: scroll;
-}
