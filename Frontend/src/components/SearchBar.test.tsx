@@ -1,26 +1,91 @@
-import { render, screen } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
+import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 
-import { SearchBar } from "./SearchBar"
+import { SearchBar } from "./SearchBar";
 
-describe('The SearchBar component', () => {
-  it.each(
-    [
-      'mic'
-    ]
-  )("should send a request for '%s' when the user types '%s' in the searchbox", async (needle) => {
-    const mockQuery = jest.fn()
-    const name = 'search-input'
+describe("The SearchBar component", () => {
+  let user: UserEvent;
 
-    render(<SearchBar action={mockQuery} name={name} />)
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
 
-    const searchbox = await screen.findByRole('searchbox')
-    
-    userEvent.type(searchbox, needle)
+  afterAll(() => {
+    jest.useRealTimers();
+  });
 
-    const args = mockQuery.mock.calls.at(0)
-    expect(args).toHaveLength(1)
-    expect(args[0]).toBeInstanceOf(FormData)
-    expect(args[0].get(name)).toEqual(needle)
-  })
-})
+  beforeEach(() => {
+    user = userEvent.setup({
+      advanceTimers: jest.advanceTimersByTime,
+    });
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it.each(["mic", "fulll"])(
+    "should send a request for '%s' when the userEvent types it in the searchbox",
+    async (needle) => {
+      const mockQuery = jest.fn();
+      const name = "search-input";
+
+      render(<SearchBar action={mockQuery} name={name} />);
+
+      const searchbox = await screen.findByRole("searchbox");
+
+      await user.type(searchbox, needle);
+
+      act(() => {
+        jest.advanceTimersByTime(800);
+      });
+
+      const args = mockQuery.mock.calls.at(0);
+      expect(args).toHaveLength(1);
+      expect(args[0]).toBeInstanceOf(FormData);
+      expect(args[0].get(name)).toEqual(needle);
+    }
+  );
+
+  it("should send a maximum of 2 requests per second", async () => {
+    const mockQuery = jest.fn();
+    const name = "search-input";
+
+    render(<SearchBar action={mockQuery} name={name} />);
+
+    const searchbox = await screen.findByRole("searchbox");
+
+    await user.type(searchbox, "mic");
+
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
+
+    await user.type(searchbox, "ro");
+
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
+
+    await user.type(searchbox, "so");
+
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
+
+    await user.type(searchbox, "ft");
+
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
+
+    await user.type(searchbox, "-l");
+
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
+
+    expect(screen.getByRole("searchbox")).toHaveValue("microsoft-l");
+    expect(mockQuery).toHaveBeenCalledTimes(2);
+  });
+});
