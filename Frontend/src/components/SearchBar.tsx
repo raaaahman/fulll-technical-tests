@@ -1,4 +1,10 @@
-import { ActionDispatch, ChangeEvent, useRef, useState } from "react";
+import {
+  ActionDispatch,
+  ChangeEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { composeClass as cc } from "../helpers/css";
 import utils from "../utils.module.css";
@@ -8,35 +14,54 @@ type SearchBarProps = {
   action: ActionDispatch<[FormData]>;
   name: string;
   ariaLabel?: string;
-  placeholder?: string
+  placeholder?: string;
 };
 
-export function SearchBar({action, name, ariaLabel = 'Search', placeholder }:SearchBarProps) {
-  const [locked, setLocked] = useState(false)
+export function SearchBar({
+  action,
+  name,
+  ariaLabel = "Search",
+  placeholder,
+}: SearchBarProps) {
+  const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined);
+  const [value, setValue] = useState("");
 
-  const formRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length >= 3 && !locked) {
-      setLocked(true)
+    setValue(event.target.value);
+  };
 
-      formRef.current?.requestSubmit()
-    }
-  }
+  useEffect(() => {
+    if (timer !== undefined || value.length < 3) return;
 
-  return <form
-  ref={formRef}
-    role="search"
-    className={cc(styles.searchbar, utils["mx-md"], utils["flex-static"])}
-    action={action}
-  >
-    <input
-      type="search"
-      id={name}
-      name={name}
-      aria-label={ariaLabel}
-      placeholder={placeholder}
-      className={cc(styles.searchbox, utils.h1)}
-      onChange={handleChange} />
-  </form>;
+    setTimer(
+      setTimeout(() => {
+        formRef.current?.requestSubmit();
+        setTimer(undefined);
+      }, 400)
+    );
+
+    return () => clearTimeout(timer);
+  }, [value]);
+
+  return (
+    <form
+      ref={formRef}
+      role="search"
+      className={cc(styles.searchbar, utils["mx-md"], utils["flex-static"])}
+      action={action}
+    >
+      <input
+        type="search"
+        id={name}
+        name={name}
+        aria-label={ariaLabel}
+        placeholder={placeholder}
+        className={cc(styles.searchbox, utils.h1)}
+        onChange={handleChange}
+        value={value}
+      />
+    </form>
+  );
 }
