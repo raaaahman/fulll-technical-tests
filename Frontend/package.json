@@ -80,5 +80,10 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@bundled-es-modules)"
+    ]
   }
 }

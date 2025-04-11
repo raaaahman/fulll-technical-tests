@@ -8,8 +8,7 @@ export const handlers = [
     return HttpResponse.json(users)  
   }),
 
-  http.get(/^https?:\/\/avatars\.githubusercontent\.com\/u\/\d+/, (info) => {
-    console.log(info.request.url)
+  http.get(/^https?:\/\/avatars\.githubusercontent\.com\/u\/\d+/, () => {
     return HttpResponse.xml(avatar)
   })
 ]

@@ -19,18 +19,6 @@
   height: calc(100% - 64px - 1.5rem);
 }
 
-.searchbar {
-  align-self: center;
-}
-
-.searchbox {
-  min-width: 24rem;
-  height: 2.75rem;
-  background-color: var(--neutral-darken);
-  color: var(--neutral-darken-content);
-  border-radius: 0.5rem;
-}
-
 .menubar {
   margin-top: 2rem;
   margin-bottom: 2rem;

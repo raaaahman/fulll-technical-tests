@@ -1,0 +1,11 @@
+.searchbar {
+  align-self: center;
+}
+
+.searchbox {
+  min-width: 24rem;
+  height: 2.75rem;
+  background-color: var(--neutral-darken);
+  color: var(--neutral-darken-content);
+  border-radius: 0.5rem;
+}

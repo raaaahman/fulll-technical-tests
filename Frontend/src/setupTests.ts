@@ -3,3 +3,8 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+
+import "./__mocks__/globals";
+import { server } from "./__mocks__/server";
+
+server.listen();
