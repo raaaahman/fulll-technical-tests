@@ -14,6 +14,10 @@ export const QueryContext = createContext<{
   data: UserData[] | null;
   query: ActionDispatch<[FormData]>;
   isPending: boolean;
+  error?: {
+    status: number;
+    message: string;
+  };
 } | null>(null);
 
 export function QueryContextProvider({ children }: PropsWithChildren<{}>) {
