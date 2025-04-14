@@ -16,7 +16,7 @@ interface IError {
   message: string;
 }
 
-interface IQueryContext {
+export interface IQueryContext {
   data: UserData[] | null;
   query: ActionDispatch<[FormData]>;
   isPending: boolean;
@@ -62,5 +62,5 @@ export function useQueryContext() {
   if (!context)
     throw new Error("Component should be nested in a QueryContextProvider.");
 
-  return { ...context };
+  return context;
 }
