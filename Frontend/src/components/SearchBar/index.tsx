@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-import { composeClass as cc } from "../helpers/css";
-import utils from "../utils.module.css";
+import { composeClass as cc } from "../../helpers/css";
+import utils from "../../utils.module.css";
 import styles from "./SearchBar.module.css";
-import { useQueryContext } from "../contexts/QueryContext";
+import { useQueryContext } from "../../contexts/QueryContext";
 
 type SearchBarProps = {
   name: string;

@@ -1,8 +1,8 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 
-import { SearchBar } from "./SearchBar";
-import { QueryContext } from "../contexts/QueryContext";
+import { SearchBar } from ".";
+import { QueryContext } from "../../contexts/QueryContext";
 
 describe("The SearchBar component", () => {
   let user: UserEvent;

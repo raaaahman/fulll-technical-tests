@@ -10,7 +10,7 @@ import {
   MESSAGE_NO_RESULTS,
   MESSAGE_RATE_LIMIT_EXCEEDED,
 } from "./consts";
-import { QueryContext } from "../../contexts/QueryContext";
+import { IQueryContext, QueryContext } from "../../contexts/QueryContext";
 import {
   CONTEXT_INITIAL_REQUEST_NO_RESULTS,
   CONTEXT_INITIAL_REQUEST_PENDING,
@@ -23,15 +23,13 @@ import {
   CONTEXT_SUBSEQUENT_REQUEST_SERVER_ERROR,
   CONTEXT_SUBSEQUENT_REQUEST_SERVER_ERROR_NO_RESULTS,
 } from "../../__mocks__/contexts";
+import { PropsWithChildren } from "react";
+import { EditContextProvider } from "../../contexts/EditContext";
 
 describe("The Feed component", () => {
   it("should display a specific message when no request has been sent.", () => {
     render(<Feed />, {
-      wrapper: ({ children }) => (
-        <QueryContext value={CONTEXT_INITIAL_STATE_NO_REQUEST}>
-          {children}
-        </QueryContext>
-      ),
+      wrapper: createWrapper(CONTEXT_INITIAL_STATE_NO_REQUEST),
     });
 
     expect(screen.getByText(MESSAGE_NO_REQUEST)).toBeVisible();
@@ -45,9 +43,7 @@ describe("The Feed component", () => {
     "should display a loading message while the request is pending",
     (context) => {
       render(<Feed />, {
-        wrapper: ({ children }) => (
-          <QueryContext value={context}>{children}</QueryContext>
-        ),
+        wrapper: createWrapper(context),
       });
 
       expect(screen.getByText(MESSAGE_LOADING)).toBeVisible();
@@ -56,11 +52,7 @@ describe("The Feed component", () => {
 
   it("should display results if data has been received.", () => {
     render(<Feed />, {
-      wrapper: ({ children }) => (
-        <QueryContext value={CONTEXT_INITIAL_REQUEST_RESULTS}>
-          {children}
-        </QueryContext>
-      ),
+      wrapper: createWrapper(CONTEXT_INITIAL_REQUEST_RESULTS),
     });
 
     expect(screen.getAllByRole("article")).not.toHaveLength(0);
@@ -68,11 +60,7 @@ describe("The Feed component", () => {
 
   it("should display a special message when no results were found.", () => {
     render(<Feed />, {
-      wrapper: ({ children }) => (
-        <QueryContext value={CONTEXT_INITIAL_REQUEST_NO_RESULTS}>
-          {children}
-        </QueryContext>
-      ),
+      wrapper: createWrapper(CONTEXT_INITIAL_REQUEST_NO_RESULTS),
     });
 
     expect(screen.getByText(MESSAGE_NO_RESULTS)).toBeVisible();
@@ -86,9 +74,7 @@ describe("The Feed component", () => {
     "should display an error message if an error was thrown from the request.",
     (context) => {
       render(<Feed />, {
-        wrapper: ({ children }) => (
-          <QueryContext value={context}>{children}</QueryContext>
-        ),
+        wrapper: createWrapper(context),
       });
 
       expect(screen.getByText(MESSAGE_NETWORK_ERROR)).toBeVisible();
@@ -102,9 +88,7 @@ describe("The Feed component", () => {
     "should display a special error message when the application hit the API's rate limit.",
     (context, expectedVisible) => {
       render(<Feed />, {
-        wrapper: ({ children }) => (
-          <QueryContext value={context}>{children}</QueryContext>
-        ),
+        wrapper: createWrapper(context),
       });
 
       if (expectedVisible)
@@ -116,3 +100,11 @@ describe("The Feed component", () => {
     }
   );
 });
+
+function createWrapper(initialQueryContext: IQueryContext) {
+  return ({ children }: PropsWithChildren<{}>) => (
+    <QueryContext value={initialQueryContext}>
+      <EditContextProvider>{children}</EditContextProvider>
+    </QueryContext>
+  );
+}
