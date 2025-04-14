@@ -1,23 +1,34 @@
 /* eslint-disable jest/no-conditional-expect */
+/* eslint-disable jest/no-mocks-import */
 import { render, screen } from "@testing-library/react";
 
+import { Feed } from ".";
 import {
-  Feed,
   MESSAGE_LOADING,
   MESSAGE_NETWORK_ERROR,
   MESSAGE_NO_REQUEST,
   MESSAGE_NO_RESULTS,
   MESSAGE_RATE_LIMIT_EXCEEDED,
-} from "./Feed";
-import { QueryContext } from "../contexts/QueryContext";
-// eslint-disable-next-line jest/no-mocks-import
-import users from "../__mocks__/github-users_q=mic.json";
+} from "./consts";
+import { QueryContext } from "../../contexts/QueryContext";
+import {
+  CONTEXT_INITIAL_REQUEST_NO_RESULTS,
+  CONTEXT_INITIAL_REQUEST_PENDING,
+  CONTEXT_INITIAL_REQUEST_RATE_API_LIMIT8EXCEEDED,
+  CONTEXT_INITIAL_REQUEST_RESULTS,
+  CONTEXT_INITIAL_REQUEST_SERVER_ERROR,
+  CONTEXT_INITIAL_STATE_NO_REQUEST,
+  CONTEXT_SUBSEQUENT_REQUEST_PENDING,
+  CONTEXT_SUBSEQUENT_REQUEST_PENDING_NO_RESULTS,
+  CONTEXT_SUBSEQUENT_REQUEST_SERVER_ERROR,
+  CONTEXT_SUBSEQUENT_REQUEST_SERVER_ERROR_NO_RESULTS,
+} from "../../__mocks__/contexts";
 
 describe("The Feed component", () => {
   it("should display a specific message when no request has been sent.", () => {
     render(<Feed />, {
       wrapper: ({ children }) => (
-        <QueryContext value={{ data: null, query: () => {}, isPending: false }}>
+        <QueryContext value={CONTEXT_INITIAL_STATE_NO_REQUEST}>
           {children}
         </QueryContext>
       ),
@@ -27,21 +38,9 @@ describe("The Feed component", () => {
   });
 
   it.each([
-    {
-      data: null,
-      query: () => {},
-      isPending: true,
-    },
-    {
-      data: [],
-      query: () => {},
-      isPending: true,
-    },
-    {
-      data: users.items,
-      query: () => {},
-      isPending: true,
-    },
+    CONTEXT_INITIAL_REQUEST_PENDING,
+    CONTEXT_SUBSEQUENT_REQUEST_PENDING_NO_RESULTS,
+    CONTEXT_SUBSEQUENT_REQUEST_PENDING,
   ])(
     "should display a loading message while the request is pending",
     (context) => {
@@ -58,13 +57,7 @@ describe("The Feed component", () => {
   it("should display results if data has been received.", () => {
     render(<Feed />, {
       wrapper: ({ children }) => (
-        <QueryContext
-          value={{
-            data: users.items,
-            query: () => {},
-            isPending: false,
-          }}
-        >
+        <QueryContext value={CONTEXT_INITIAL_REQUEST_RESULTS}>
           {children}
         </QueryContext>
       ),
@@ -76,7 +69,7 @@ describe("The Feed component", () => {
   it("should display a special message when no results were found.", () => {
     render(<Feed />, {
       wrapper: ({ children }) => (
-        <QueryContext value={{ data: [], query: () => {}, isPending: false }}>
+        <QueryContext value={CONTEXT_INITIAL_REQUEST_NO_RESULTS}>
           {children}
         </QueryContext>
       ),
@@ -86,24 +79,9 @@ describe("The Feed component", () => {
   });
 
   it.each([
-    {
-      data: null,
-      query: () => {},
-      isPending: false,
-      error: { status: 500, message: "Internal Server Error" },
-    },
-    {
-      data: [],
-      query: () => {},
-      isPending: false,
-      error: { status: 500, message: "Internal Server Error" },
-    },
-    {
-      data: users.items,
-      query: () => {},
-      isPending: false,
-      error: { status: 500, message: "Internal Server Error" },
-    },
+    CONTEXT_INITIAL_REQUEST_SERVER_ERROR,
+    CONTEXT_SUBSEQUENT_REQUEST_SERVER_ERROR_NO_RESULTS,
+    CONTEXT_SUBSEQUENT_REQUEST_SERVER_ERROR,
   ])(
     "should display an error message if an error was thrown from the request.",
     (context) => {
@@ -118,24 +96,8 @@ describe("The Feed component", () => {
   );
 
   it.each([
-    [
-      {
-        data: null,
-        query: () => {},
-        isPending: false,
-        error: { status: 500, message: "Internal Server Error." },
-      },
-      false,
-    ],
-    [
-      {
-        data: null,
-        query: () => {},
-        isPending: false,
-        error: { status: 403, message: "API rate limit exceeded" },
-      },
-      true,
-    ],
+    [CONTEXT_INITIAL_REQUEST_SERVER_ERROR, false],
+    [CONTEXT_INITIAL_REQUEST_RATE_API_LIMIT8EXCEEDED, true],
   ])(
     "should display a special error message when the application hit the API's rate limit.",
     (context, expectedVisible) => {

@@ -1,20 +1,18 @@
-import { useQueryContext } from "../contexts/QueryContext";
-import { UserCard } from "./UserCard";
+import { useQueryContext } from "../../contexts/QueryContext";
+import { UserCard } from "../UserCard";
 import styles from "./Feed.module.css";
-
-export const MESSAGE_NO_REQUEST =
-  "Type into the search bar to search for Github users.";
-export const MESSAGE_NO_RESULTS = "No user match this query...";
-export const MESSAGE_LOADING = "Loading...";
-export const MESSAGE_NETWORK_ERROR =
-  "Something went wrong with the request. Try to send it again in a few seconds.";
-export const MESSAGE_RATE_LIMIT_EXCEEDED =
-  "The application has exceeded the limit of request it can send. Please come back in one hour or more...";
+import {
+  MESSAGE_RATE_LIMIT_EXCEEDED,
+  MESSAGE_NETWORK_ERROR,
+  MESSAGE_LOADING,
+  MESSAGE_NO_RESULTS,
+  MESSAGE_NO_REQUEST,
+} from "./consts";
 
 function getMessage(context: ReturnType<typeof useQueryContext>) {
   const { error, data, isPending } = context;
 
-  if (error && error.message === "API rate limit exceeded") {
+  if (error && error.message === MESSAGE_RATE_LIMIT_EXCEEDED) {
     return MESSAGE_RATE_LIMIT_EXCEEDED;
   } else if (error) {
     return MESSAGE_NETWORK_ERROR;
