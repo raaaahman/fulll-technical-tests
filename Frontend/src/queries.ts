@@ -12,7 +12,6 @@ let ratelimitExceeded = false;
 export async function getUsersByLogin(
   value: string
 ): Promise<APIResponse<UserData>> {
-  console.log(ratelimitExceeded);
   if (ratelimitExceeded) throw new Error(MESSAGE_RATE_LIMIT_EXCEEDED);
 
   const response = await fetch(`${BASE_URL}${PATH_SEARCH_USERS}?q=${value}`);
@@ -23,9 +22,7 @@ export async function getUsersByLogin(
   ) {
     ratelimitExceeded = true;
     const delay = parseInt(response.headers.get(HEADER_RATE_LIMIT_RESET)!);
-    console.log(delay);
     setTimeout(() => {
-      console.log("timeout");
       ratelimitExceeded = false;
     }, delay);
 

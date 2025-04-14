@@ -28,8 +28,6 @@ test("Search feature finds results", async ({ page }) => {
     { encoding: "utf-8" }
   );
 
-  console.log(avatarMock);
-
   page.route("https://avatars.githubusercontent.com/u/*", async (route) => {
     route.fulfill({
       status: 200,
