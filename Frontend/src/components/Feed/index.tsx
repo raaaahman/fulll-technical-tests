@@ -8,6 +8,7 @@ import {
   MESSAGE_NO_RESULTS,
   MESSAGE_NO_REQUEST,
 } from "./consts";
+import { useEditStateContext } from "../../contexts/EditContext";
 
 function getMessage(context: ReturnType<typeof useQueryContext>) {
   const { error, data, isPending } = context;
@@ -26,15 +27,16 @@ function getMessage(context: ReturnType<typeof useQueryContext>) {
 }
 
 export function Feed() {
-  const context = useQueryContext();
-  const { isPending, data: users, error } = context;
+  const queryContext = useQueryContext();
+  const { items: users } = useEditStateContext();
+  const { isPending, error } = queryContext;
 
   return (
     <section role="feed" className={styles.feed}>
       {!error && !isPending && Array.isArray(users) && users.length > 0 ? (
         users.map((user) => <UserCard key={user.id} {...user} />)
       ) : (
-        <p>{getMessage(context)}</p>
+        <p>{getMessage(queryContext)}</p>
       )}
     </section>
   );

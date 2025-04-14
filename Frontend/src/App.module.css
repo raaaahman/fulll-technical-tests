@@ -18,25 +18,3 @@
   margin: auto;
   height: calc(100% - 64px - 1.5rem);
 }
-
-.menubar {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  align-self: stretch;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.select-all:indeterminate,
-.select-all:checked {
-  border-style: solid;
-  border-color: var(--primary-content);
-  border-width: 2px;
-  border-radius: 2px;
-  background-color: var(--primary);
-}
-
-.select-all_label_number {
-  font-weight: 700;
-}
