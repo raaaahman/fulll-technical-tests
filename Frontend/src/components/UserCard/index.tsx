@@ -18,7 +18,7 @@ export function UserCard({
       <input
         type="checkbox"
         name="select-user"
-        className={styles.select}
+        className={cc(styles.select, utils.select, utils["icon-xs"])}
         aria-checked={selected}
         checked={selected}
         onChange={() =>
