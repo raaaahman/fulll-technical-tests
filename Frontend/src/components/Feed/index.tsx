@@ -36,7 +36,7 @@ export function Feed() {
       {!error && !isPending && Array.isArray(users) && users.length > 0 ? (
         users.map((user) => <UserCard key={user.id} {...user} />)
       ) : (
-        <p>{getMessage(queryContext)}</p>
+        <p className={styles.message}>{getMessage(queryContext)}</p>
       )}
     </section>
   );
