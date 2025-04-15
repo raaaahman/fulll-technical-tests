@@ -3,6 +3,7 @@
 }
 
 .searchbox {
+  appearance: none;
   min-width: 24rem;
   height: 2.75rem;
   background-color: var(--neutral-darken);

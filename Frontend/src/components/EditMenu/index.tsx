@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   useEditDispatchContext,
   useEditStateContext,
@@ -14,12 +15,19 @@ export function EditMenu() {
 
   const selectedCount = items.filter((item) => item.selected).length;
 
+  const selectRef = useRef<HTMLInputElement>(null);
+
   const allSelected =
     items.length === 0 || selectedCount === 0
       ? false
       : selectedCount === items.length
       ? true
       : undefined;
+
+  useEffect(() => {
+    if (selectRef.current)
+      selectRef.current.indeterminate = typeof allSelected === "undefined";
+  });
 
   return (
     <div
@@ -28,13 +36,14 @@ export function EditMenu() {
     >
       <label htmlFor="select-all">
         <input
+          ref={selectRef}
           type="checkbox"
           id="select-all"
           role="menuitemcheckbox"
           name="select-all"
           aria-checked={allSelected}
           checked={allSelected}
-          className={styles["select-all"]}
+          className={cc(styles["select-all"], utils.select, utils["icon-xs"])}
           onChange={() =>
             dispatch({
               type: allSelected ? "unselect" : "select",
