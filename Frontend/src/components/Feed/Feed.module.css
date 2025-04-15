@@ -1,9 +1,15 @@
 .feed {
-  align-self: center;
-  margin: 0 auto;
+  flex: 1;
+  align-self: stretch;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
   overflow-y: scroll;
+}
+
+.message {
+  flex: 1;
+  align-self: center;
+  text-align: center;
 }
