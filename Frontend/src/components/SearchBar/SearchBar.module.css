@@ -3,10 +3,16 @@
 }
 
 .searchbox {
-  appearance: none;
   min-width: 24rem;
   height: 2.75rem;
   background-color: var(--neutral-darken);
-  color: var(--neutral-darken-content);
+  border: none;
   border-radius: 0.5rem;
+  outline: none;
+  box-shadow: none;
+}
+
+.searchbox::placeholder {
+  font-weight: 500;
+  color: var(--neutral-darken-content);
 }
